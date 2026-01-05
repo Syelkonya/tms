@@ -1,16 +1,14 @@
-package su.ternovskii.tms.controller;
+package su.ternovskii.tms;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import su.ternovskii.tms.Task;
-import su.ternovskii.tms.service.TaskService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 @RestController
@@ -18,7 +16,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TaskController {
 
     private final TaskService taskService;
-
 
     @Autowired
     public TaskController(TaskService taskService) {
@@ -36,7 +33,7 @@ public class TaskController {
         log.info("method getTasksById starts with id - {}", id);
         try {
             return ResponseEntity.ok(taskService.getTaskById(id));
-        } catch (NoSuchElementException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -61,7 +58,7 @@ public class TaskController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(taskService.update(id, taskToUpdate));
-        } catch (NoSuchElementException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
@@ -76,6 +73,20 @@ public class TaskController {
             taskService.deleteTask(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PostMapping("/{id}/start")
+    public ResponseEntity<Task> startTaskById(
+            @PathVariable("id") Long id
+    ) {
+        log.info("called start task id {}", id);
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(taskService.startTask(id));
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
