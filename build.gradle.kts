@@ -32,6 +32,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	runtimeOnly("org.postgresql:postgresql:42.7.7")
+	implementation("jakarta.validation:jakarta.validation-api:4.0.0-M1")
 }
 
 tasks.withType<Test> {

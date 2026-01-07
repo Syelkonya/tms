@@ -37,6 +37,9 @@ public class TaskEntity {
     @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
+    @Column(name = "done_date_time")
+    private LocalDateTime doneDateTime;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "priority")
     private Priority priority;
