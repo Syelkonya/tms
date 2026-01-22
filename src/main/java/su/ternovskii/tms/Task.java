@@ -1,7 +1,6 @@
 package su.ternovskii.tms;
 
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
